@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Home Page Title</title>
+</head>
+<body>
+
+<h1>This is a Heading</h1>
+<p>This is a paragraph on page home.</p>
+
+
+<p>Hello, {{request.user}}</p>
+
+<p>
+  <a href="{% url 'dashboard:dashPage' %}">Click here to go to dashboard</a>
+</p>
+
+<p>some text here. PLEASE ADD LINKS TO OTHER PAGES LIKE INSERT DATA PAGE AND VIEW DATA PAGE ETC HERE.</p>
+<p>THE PAGES SHOULD BE MADE IN THE DASHBOARD APP NOT THE FINANCE APP.</p>
+
+<p><a href="{% url 'CustomHome:logout' %}">Click here to logout</a></p>
+
+
+</body>
+</html>
