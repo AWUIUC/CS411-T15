@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Register Title</title>
+</head>
+<body>
+
+<h1>Register Heading</h1>
+<p>This is a paragraph on login page.</p>
+
+<form method = "POST" action="">
+  {% csrf_token %}
+
+  {{form.username.label}}
+  {{form.username}}
+
+  {{form.email.label}}
+  {{form.email}}
+
+
+  {{form.password1.label}}
+  {{form.password1}}
+
+  {{form.password2.label}}
+  {{form.password2}}
+
+  <input type="submit" name="Create User">
+</form>
+
+{{form.errors}}
+
+<li><a href = "{%url 'CustomHome:login' %}">Already have an account? Login here.</li>
+
+</body>
+</html>

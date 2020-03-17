@@ -18,7 +18,6 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('login/', include('login.urls')),
-    path('', include('signup.urls')),
-    path('dashboard/', include('dashboard.urls')),
+    path('', include('CustomHome.urls')),
+    path('dashboard/', include('dashboard.urls')), #everything as a url is now sent to CustomHome module to be handled
 ]
