@@ -83,6 +83,9 @@ DATABASES = {
         'PASSWORD': "cs411-pass",
         'HOST': "cs411financeapp.mysql.database.azure.com",
         'PORT': "3306", #case number 1496458693
+        'OPTIONS': {
+            'ssl': {'ssl-ca': '/var/www/html/BaltimoreCyberTrustRoot.crt.pem'}
+        }
     }
 }
 

@@ -64,7 +64,7 @@ def insertNonregularTransaction(request):
                 t = form.save(commit=False)
                 #raw sql insert query
                 cursor = connection.cursor()
-                cursor.execute("INSERT INTO customhome_nonregulartransaction VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s);", [t.id,t.category,t.amount,t.merchant,t.name,t.note,t.time,t.in_or_out,request.user.id])
+                cursor.execute("INSERT INTO customhome_nonregulartransaction VALUES(%s,%s,%s,%s,%s,%s,%s,%s,%s);", [t.id,t.category,t.amount,t.merchant,t.name,t.note,t.date,t.in_or_out,request.user.id])
                 return redirect('CustomHome:home')
 
         context = {'form':form}
