@@ -78,9 +78,11 @@ WSGI_APPLICATION = 'finance.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'OPTIONS': {
-            'read_default_file': 'my.cnf',
-        },
+        'NAME': 'FinanceApp',
+        'USER': 'admin_user@cs411financeapp',
+        'PASSWORD': "cs411-pass",
+        'HOST': "cs411financeapp.mysql.database.azure.com",
+        'PORT': "3306", #case number 1496458693
     }
 }
 
