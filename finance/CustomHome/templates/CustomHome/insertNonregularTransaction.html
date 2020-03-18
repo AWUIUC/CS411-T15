@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Insert Transaction Title</title>
+</head>
+<body>
+    <h1>Insert Transaction Heading</h1>
+    <p>This is a paragraph on Insert Transaction page.</p>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{form.category.label}}
+        {{form.category}}
+        {{form.amount.label}}
+        {{form.amount}}
+        {{form.merchant.label}}
+        {{form.merchant}}
+        {{form.name.label}}
+        {{form.name}}
+        {{form.note.label}}
+        {{form.note}}
+        {{form.time.label}}
+        {{form.time}}
+        {{form.in_or_out.label}}
+        {{form.in_or_out}}
+        <input type="submit" value="Send!">
+    </form>
+    {{form.errors}}
+</body>
+</html>
