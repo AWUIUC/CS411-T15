@@ -52,6 +52,7 @@ def logoutUser(request):
     logout(request)
     return redirect('CustomHome:login')
 
+@login_required(login_url='CustomHome:login')
 def insertNonregularTransaction(request):
     if not request.user.is_authenticated:
         return redirect('CustomHome:login')
@@ -70,6 +71,7 @@ def insertNonregularTransaction(request):
         context = {'form':form}
         return render(request, 'CustomHome/insertNonregularTransaction.html', context)
 
+@login_required(login_url='CustomHome:login')
 def insertRegularTransaction(request):
     if not request.user.is_authenticated:
         return redirect('CustomHome:login')
@@ -92,3 +94,29 @@ def insertRegularTransaction(request):
 @login_required(login_url='CustomHome:login')
 def homePage(request):
     return render(request, 'CustomHome/homePage.html')
+
+@login_required(login_url='CustomHome:login')
+def viewBudgetInfo(request):
+    #RAW SQL QUERY TO GET EVERYTHING FROM TABLE CALLED: customhome_budgetinfo
+    userName = request.user.get_username()
+    print(type(userName))
+    #userID = User.objects.raw('SELECT * FROM auth_user WHERE username = %s', [userName])
+    #budget = BudgetInfo.objects.raw('SELECT * FROM customhome_budgetinfo WHERE user_id= %s',[userID])
+
+    #USERID is the query set returned from this raw query
+    USERID = User.objects.raw('SELECT id FROM auth_user WHERE username = %s LIMIT 1',[userName])
+
+    #Now we have to get the actual ID from the query set returned
+    #we first set actualID to be some dummy number that it can't possibly be (-1)
+    actualID = -1
+    #then, we get the actualID (if applicable) and set it (if applicable)
+    for obj in USERID:
+        actualID = obj.id
+
+    #BUDGET IS QUERY RESULT
+    budget = BudgetInfo.objects.raw('SELECT * FROM customhome_budgetinfo WHERE user_id = %s', [actualID])
+
+
+    #PUTS QUERY RESULTS INTO A DICTIONARY TO BE PASSED IN AS A CONTEXT
+    args = {'budget':budget}
+    return render(request, 'CustomHome/viewBudgetInfo.html', args)
