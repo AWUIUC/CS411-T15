@@ -9,7 +9,9 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 
 from .models import *
-from .forms import *
+
+from .forms import CreateUserForm
+from .forms import CustomProfileForm
 
 # Create your views here.
 def registerPage(request):
@@ -17,16 +19,25 @@ def registerPage(request):
         return redirect('CustomHome:home')
     else:
         form = CreateUserForm()
+        custom_ProfileForm = CustomProfileForm() #added 3.26.20 by AW
 
         if request.method == 'POST':
             form = CreateUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
-                messages.success(request, 'Account was created for' + user)
+            custom_ProfileForm = CustomProfileForm(request.POST) #added 3.26.20 by AW
+
+            if form.is_valid() and custom_ProfileForm.is_valid(): #changed 3.26.20 by AW
+                user = form.save() #changed from form.save() to user = form.save() 3.26.20 by AW
+
+                profile = custom_ProfileForm.save(commit=False) #added 3.26.20 AW we set commit=False so we can create profile object but not save it
+                profile.user = user #added by AW 3.26.20
+                profile.save() #added by AW 3.26.20
+
+                temp_user = form.cleaned_data.get('username') #changed user to temp_user 3.26.20 by AW
+                messages.success(request, 'Account was created for' + temp_user) #changed user to temp_user 3.26.20 by AW
+
                 return redirect('CustomHome:login')
 
-        context = {'form':form}
+        context = {'form':form, 'custom_ProfileForm':custom_ProfileForm}
         return render(request, 'CustomHome/register.html', context)
 
 def loginPage(request):

@@ -10,6 +10,14 @@ class CreateUserForm(UserCreationForm):
         model = User
         fields = ['username', 'email', 'password1', 'password2']
 
+
+class CustomProfileForm(ModelForm): #added on 3.26.20 by AW
+    class Meta:
+        model = CustomProfile
+        fields=['age']
+
+
+
 class InsertNonregularTransactionForm(ModelForm):
     class Meta:
         model = NonregularTransaction
