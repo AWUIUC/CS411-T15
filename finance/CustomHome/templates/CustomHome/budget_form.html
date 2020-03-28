@@ -1,0 +1,26 @@
+<!--
+This html page handles create and update for budget info
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Some title for create and update into budget table</title>
+</head>
+<body>
+
+<h1>Some heading for create and update into budget table</h1>
+<p>This is a paragraph.</p>
+
+
+<p><a href = "{% url 'CustomHome:home' %}">Click here to go back to home page</a></p>
+<p><a href = "{% url 'CustomHome:viewBudgetInfo' %}">Click here to cancel or go back to budget info page</a></p>
+
+<form action = "" method = "POST">
+  {% csrf_token %}
+  {{form}}
+  <input type = "submit" name = "Submit">
+</form>
+
+
+</body>
+</html>
