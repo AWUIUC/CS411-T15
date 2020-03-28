@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Budget Info Page Title</title>
+</head>
+<body>
+
+<h1>This is a Heading for budget info page</h1>
+<p>This is a paragraph for budget info page.</p>
+<p>Below is information about your budget </p>
+
+<p><a href = "{% url 'CustomHome:home' %}">Click here to go back to home page</a></p>
+
+<p><a href = "{% url 'CustomHome:createBudget' %}">Click here to Create/Insert into budget</a></p>
+
+<table>
+    <tr>
+        <th>User</th>
+        <th>Category</th>
+        <th>Percentage</th>
+        <th>Total amount</th>
+        <th>Update</th>
+        <th>Delete</th>
+    </tr>
+    {% for obj in budget %}
+    <tr>
+        <td>{{ obj.user }}</td>
+        <td>{{ obj.category }}</td>
+        <td>{{ obj.percentage }}</td>
+        <td>{{ obj.total_amount_under_per_month }}</td>
+        <td><a href = "{% url 'CustomHome:updateBudget' obj.id %}">Update</a></td>
+        <td><a href = "{% url 'CustomHome:deleteBudget' obj.id %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+</body>
+</html>
