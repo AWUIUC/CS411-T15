@@ -10,4 +10,8 @@ urlpatterns = [
     path('insertNonregularTransaction/', views.insertNonregularTransaction, name='insertNonregularTransaction'),
     path('insertRegularTransaction/', views.insertRegularTransaction, name='insertRegularTransaction'),
     path('viewBudget/', views.viewBudgetInfo, name='viewBudgetInfo'),
+    path('createBudget/', views.createBudget, name='createBudget'),
+    path('updateBudget/<str:pk>/', views.updateBudget, name='updateBudget'),
+    path('deleteBudget/<str:pk>/', views.deleteBudget, name='deleteBudget'),
+
 ]

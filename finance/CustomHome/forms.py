@@ -17,6 +17,12 @@ class CustomProfileForm(ModelForm): #added on 3.26.20 by AW
         fields=['age']
 
 
+class BudgetInfoForm(ModelForm):
+    class Meta:
+        model = BudgetInfo
+        fields = '__all__'
+
+
 
 class InsertNonregularTransactionForm(ModelForm):
     class Meta:

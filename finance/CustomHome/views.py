@@ -12,6 +12,7 @@ from .models import *
 
 from .forms import CreateUserForm
 from .forms import CustomProfileForm
+from .forms import BudgetInfoForm
 
 # Create your views here.
 def registerPage(request):
@@ -131,3 +132,38 @@ def viewBudgetInfo(request):
     #PUTS QUERY RESULTS INTO A DICTIONARY TO BE PASSED IN AS A CONTEXT
     args = {'budget':budget}
     return render(request, 'CustomHome/viewBudgetInfo.html', args)
+
+@login_required(login_url='CustomHome:login')
+def createBudget(request):
+    form = BudgetInfoForm()
+    if request.method == 'POST':
+        form = BudgetInfoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('CustomHome:viewBudgetInfo')
+
+    context = {'form':form}
+    return render(request, 'CustomHome/budget_form.html', context)
+
+@login_required(login_url='CustomHome:login')
+def updateBudget(request, pk):
+    budget = BudgetInfo.objects.get(id=pk)
+    form = BudgetInfoForm(instance=budget)
+
+    if request.method == 'POST':
+        form = BudgetInfoForm(request.POST, instance=budget) #we cant JUST pass in request.POST because it will create a new item
+        if form.is_valid():
+            form.save()
+            return redirect('CustomHome:viewBudgetInfo')
+
+    context = {'form':form}
+    return render(request, 'CustomHome/budget_form.html', context)
+
+@login_required(login_url='CustomHome:login')
+def deleteBudget(request, pk):
+    budget = BudgetInfo.objects.get(id=pk)
+    if request.method == "POST":
+        budget.delete()
+        return redirect('CustomHome:viewBudgetInfo')
+    context = {'item':budget}
+    return render(request, 'CustomHome/budget_delete.html', context)

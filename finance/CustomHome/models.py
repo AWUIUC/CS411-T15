@@ -22,6 +22,8 @@ class BudgetInfo(models.Model):
     category=models.CharField(max_length=255)
     percentage=models.IntegerField()
     total_amount_under_per_month=models.IntegerField()
+    def __str__(self):
+        return self.category
 
 class RegularTransaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
