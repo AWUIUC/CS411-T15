@@ -6,6 +6,19 @@ from django.utils import timezone
 from django.contrib.auth.models import User #added 3.26.20 by AW - extending the existing User Model
 from django.core.validators import MaxValueValidator, MinValueValidator #added 3.26.20 by AW - making sure people dont put invalid ages
 
+category_choices = [
+    ('Groceries', 'Groceries'),
+    ('Education', 'Education'),
+    ('Travel', 'Travel'),
+    ('Restaurant & Bars', 'Restaurant & Bars'),
+    ('Bills & Utilities', 'Bills & Utilities'),
+    ('Shopping', 'Shopping'),
+    ('Entertainment', 'Entertainment'),
+    ('Gas', 'Gas'),
+    ('Misc', 'Misc'),
+]
+
+category_default_values = [10,10,10,10,10,10,10,10,20,]
 
 class CustomProfile(models.Model): #added 3.26.20 by AW - extending the existing User Model
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -19,7 +32,7 @@ class CustomProfile(models.Model): #added 3.26.20 by AW - extending the existing
 
 class BudgetInfo(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category=models.CharField(max_length=255)
+    category=models.CharField(max_length=255, choices=category_choices)
     percentage=models.IntegerField()
     total_amount_under_per_month=models.IntegerField()
     def __str__(self):
@@ -27,7 +40,7 @@ class BudgetInfo(models.Model):
 
 class RegularTransaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category=models.CharField(max_length=255)
+    category=models.CharField(max_length=255, choices=category_choices)
     amount=models.DecimalField(max_digits=19, decimal_places=2)
     merchant=models.CharField(max_length=255)
     name=models.CharField(max_length=255)
@@ -39,7 +52,7 @@ class RegularTransaction(models.Model):
 
 class NonregularTransaction(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    category=models.CharField(max_length=255)
+    category=models.CharField(max_length=255, choices=category_choices)
     amount=models.DecimalField(max_digits=19, decimal_places=2)
     merchant=models.CharField(max_length=255)
     name=models.CharField(max_length=255)

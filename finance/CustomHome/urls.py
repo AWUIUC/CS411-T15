@@ -13,5 +13,10 @@ urlpatterns = [
     path('createBudget/', views.createBudget, name='createBudget'),
     path('updateBudget/<str:pk>/', views.updateBudget, name='updateBudget'),
     path('deleteBudget/<str:pk>/', views.deleteBudget, name='deleteBudget'),
-
+    path('viewRegularTransaction/',views.viewRegularTransaction, name='viewRegularTransaction'),
+    path('viewNonregularTransaction/',views.viewNonregularTransaction, name='viewNonregularTransaction'),
+    path('updateRegularTransaction/<str:pk>/',views.updateRegularTransaction, name='updateRegularTransaction'),
+    path('updateNonregularTransaction/<str:pk>/',views.updateNonregularTransaction, name='updateNonregularTransaction'),
+    path('deleteRegularTransaction/<str:pk>/',views.deleteRegularTransaction, name='deleteRegularTransaction'),
+    path('deleteNonregularTransaction/<str:pk>/',views.deleteNonregularTransaction, name='deleteNonregularTransaction'),
 ]

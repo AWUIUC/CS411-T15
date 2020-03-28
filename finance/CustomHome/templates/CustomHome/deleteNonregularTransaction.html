@@ -1,0 +1,32 @@
+<!--
+This html page handles deletions for budget info
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Delete non-regular transaction</title>
+</head>
+<body>
+
+<h1>Delete non-regular transaction</h1>
+<p>This is a paragraph.</p>
+
+<p>Are you sure you want to delete "{{item}}"?</p>
+
+<form action = "{% url 'CustomHome:deleteNonregularTransaction' item.id %}" method = "POST">
+
+  {% csrf_token %}
+  <a href = "{% url 'CustomHome:viewNonregularTransaction' %}">Cancel</a>
+  <input type = "submit" name = "Confirm" value = "Click here to delete">
+</form>
+
+<!--
+<form action = "" method = "POST">
+  {% csrf_token %}
+  {{form}}
+  <input type = "submit" name = "Submit">
+</form>
+-->
+
+</body>
+</html>
