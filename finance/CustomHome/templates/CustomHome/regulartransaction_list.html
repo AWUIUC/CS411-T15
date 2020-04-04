@@ -1,0 +1,29 @@
+<h1>Regular Transactions</h1>
+<p>Hello, {{userid}}</p>
+<p><a href="{% url 'CustomHome:home' %}">Click here to go back to home page</a></p>
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Merchant</th>
+        <th>Name</th>
+        <th>Note</th>
+        <th>Frequency</th>
+        <th>Start Date</th>
+        <th>In or Out</th>
+    </tr>
+    {% for obj in regulartransaction_list %}
+    <tr>
+        <td>{{ obj.category }}</td>
+        <td>{{ obj.amount }}</td>
+        <td>{{ obj.merchant }}</td>
+        <td>{{ obj.name }}</td>
+        <td>{{ obj.note }}</td>
+        <td>{{ obj.frequency }}</td>
+        <td>{{ obj.start_date }}</td>
+        <td>{{ obj.in_or_out }}</td>
+        <td><a href="{% url 'CustomHome:updateRegularTransaction' obj.id %}">Update</a></td>
+        <td><a href="{% url 'CustomHome:deleteRegularTransaction' obj.id %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>

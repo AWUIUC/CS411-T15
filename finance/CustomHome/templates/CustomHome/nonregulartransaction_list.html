@@ -1,0 +1,28 @@
+<h1>Non-Regular Transactions</h1>
+<p>Hello, {{userid}}</p>
+<p><a href="{% url 'CustomHome:home' %}">Click here to go back to home page</a></p>
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Amount</th>
+        <th>Merchant</th>
+        <th>Name</th>
+        <th>Note</th>
+        <th>Date</th>
+        <th>In or Out</th>
+    </tr>
+    {% for obj in nonregulartransaction_list %}
+    <tr>
+        <td>{{ obj.category }}</td>
+        <td>{{ obj.amount }}</td>
+        <td>{{ obj.merchant }}</td>
+        <td>{{ obj.name }}</td>
+        <td>{{ obj.note }}</td>
+        <td>{{ obj.frequency }}</td>
+        <td>{{ obj.date }}</td>
+        <td>{{ obj.in_or_out }}</td>
+        <td><a href="{% url 'CustomHome:updateNonregularTransaction' obj.id %}">Update</a></td>
+        <td><a href="{% url 'CustomHome:deleteNonregularTransaction' obj.id %}">Delete</a></td>
+    </tr>
+    {% endfor %}
+</table>

@@ -9,10 +9,8 @@ from django.contrib.auth.decorators import login_required
 from django.db import connection
 
 from .models import *
-
-from .forms import CreateUserForm
-from .forms import CustomProfileForm
-from .forms import BudgetInfoForm
+from .forms import *
+from django.views.generic.list import ListView
 
 # Create your views here.
 def registerPage(request):
@@ -167,3 +165,86 @@ def deleteBudget(request, pk):
         return redirect('CustomHome:viewBudgetInfo')
     context = {'item':budget}
     return render(request, 'CustomHome/budget_delete.html', context)
+    
+@login_required(login_url='CustomHome:login')
+def viewRegularTransaction(request):
+    #paginate_by = 100  # if pagination is desired
+    #userID = User.objects.raw('SELECT * FROM auth_user WHERE username = %s', [userName])
+    #budget = BudgetInfo.objects.raw('SELECT * FROM customhome_budgetinfo WHERE user_id= %s',[userID])
+
+    #USERID is the query set returned from this raw query
+    USERID = request.user.id
+    queryset = RegularTransaction.objects.raw('SELECT * FROM customhome_regulartransaction WHERE user_id = %s',[USERID])
+    context = {'regulartransaction_list':queryset, 'userid':USERID}
+    return render(request, 'CustomHome/regulartransaction_list.html',context)
+
+@login_required(login_url='CustomHome:login')
+def viewNonregularTransaction(request):
+    #paginate_by = 100  # if pagination is desired
+    userName = request.user.get_username()
+    #userID = User.objects.raw('SELECT * FROM auth_user WHERE username = %s', [userName])
+    #budget = BudgetInfo.objects.raw('SELECT * FROM customhome_budgetinfo WHERE user_id= %s',[userID])
+
+    #USERID is the query set returned from this raw query
+    USERID = request.user.id
+    queryset = NonregularTransaction.objects.raw('SELECT * FROM customhome_nonregulartransaction WHERE user_id = %s',[USERID])
+    context = {'nonregulartransaction_list':queryset, 'userid':USERID}
+    return render(request, 'CustomHome/nonregulartransaction_list.html',context)
+
+@login_required(login_url='CustomHome:login')
+def updateRegularTransaction(request, pk):
+    obj = RegularTransaction.objects.raw('SELECT * FROM customhome_regulartransaction WHERE id = %s',[pk])[0]
+    form = RegularTransactionForm(instance=obj)
+
+    if request.method == 'POST':
+        form = RegularTransactionForm(request.POST, instance=obj) #we cant JUST pass in request.POST because it will create a new item
+        if form.is_valid():
+            t = form.save(commit=False)
+            #raw sql insert query
+            cursor = connection.cursor()
+            cursor.execute("UPDATE customhome_regulartransaction SET id=%s,category=%s,amount=%s,merchant=%s,name=%s,note=%s,frequency=%s,in_or_out=%s,user_id=%s,start_date=%s WHERE id = %s", [t.id,t.category,t.amount,t.merchant,t.name,t.note,t.frequency,t.in_or_out,t.user_id,t.start_date, pk])
+            return redirect('CustomHome:viewRegularTransaction')
+
+    context = {'form':form}
+    return render(request, 'CustomHome/updateRegularTransaction.html', context)
+
+@login_required(login_url='CustomHome:login')
+def deleteRegularTransaction(request, pk):
+    obj = RegularTransaction.objects.raw('SELECT * FROM customhome_regulartransaction WHERE id = %s',[pk])[0]
+    if request.method == "POST":
+        #obj.delete()
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM customhome_regulartransaction WHERE id=%s", [pk])
+            
+        return redirect('CustomHome:viewRegularTransaction')
+    context = {'item':obj}
+    return render(request, 'CustomHome/deleteRegularTransaction.html', context)
+
+@login_required(login_url='CustomHome:login')
+def updateNonregularTransaction(request, pk):
+    obj = NonregularTransaction.objects.raw('SELECT * FROM customhome_nonregulartransaction WHERE id = %s',[pk])[0]
+    form = NonregularTransactionForm(instance=obj)
+
+    if request.method == 'POST':
+        form = NonregularTransactionForm(request.POST, instance=obj) #we cant JUST pass in request.POST because it will create a new item
+        if form.is_valid():
+            t = form.save(commit=False)
+            #raw sql insert query
+            cursor = connection.cursor()
+            cursor.execute("UPDATE customhome_nonregulartransaction SET id=%s,category=%s,amount=%s,merchant=%s,name=%s,note=%s,in_or_out=%s,user_id=%s,date=%s WHERE id = %s", [t.id,t.category,t.amount,t.merchant,t.name,t.note,t.in_or_out,t.user_id,t.date, pk])
+            
+            return redirect('CustomHome:viewNonregularTransaction')
+
+    context = {'form':form}
+    return render(request, 'CustomHome/updateNonregularTransaction.html', context)
+
+@login_required(login_url='CustomHome:login')
+def deleteNonregularTransaction(request, pk):
+    obj = NonregularTransaction.objects.raw('SELECT * FROM customhome_nonregulartransaction WHERE id = %s',[pk])[0]
+    if request.method == "POST":
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM customhome_nonregulartransaction WHERE id=%s", [pk])
+
+        return redirect('CustomHome:viewNonregularTransaction')
+    context = {'item':obj}
+    return render(request, 'CustomHome/deleteNonregularTransaction.html', context)

@@ -1,0 +1,26 @@
+<!--
+This html page handles create and update for budget info
+-->
+<!DOCTYPE html>
+<html>
+<head>
+<title>Update non-regular transaction</title>
+</head>
+<body>
+
+    <h1>Update non-regular transaction</h1>
+<p>This is a paragraph.</p>
+
+
+<p><a href = "{% url 'CustomHome:home' %}">Click here to go back to home page</a></p>
+<p><a href="{% url 'CustomHome:viewNonregularTransaction' %}">Click here to cancel or go back to view non-regular transaction page</a></p>
+
+<form action = "" method = "POST">
+  {% csrf_token %}
+  {{form}}
+  <input type = "submit" name = "Submit">
+</form>
+
+
+</body>
+</html>

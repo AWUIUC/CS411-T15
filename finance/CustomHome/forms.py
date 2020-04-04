@@ -47,3 +47,18 @@ class InsertRegularTransactionForm(ModelForm):
         self.instance.user = self.user
         form = super(InsertRegularTransactionForm, self).save(*args, **kwargs)
         return form
+
+class RegularTransactionForm(ModelForm):
+    class Meta:
+        model = RegularTransaction
+        fields = ['category', 'amount', 'merchant', 'name','note','frequency','start_date','in_or_out']
+
+class NonregularTransactionForm(ModelForm):
+    class Meta:
+        model = NonregularTransaction
+        fields = ['category', 'amount', 'merchant', 'name','note','date','in_or_out']
+
+class ProductForm(forms.Form):
+    class Meta:
+        model = RegularTransaction
+        fields = ['category', 'amount', 'merchant', 'name','note','frequency','start_date','in_or_out']
