@@ -8,12 +8,9 @@
     <p>This is a paragraph on page home.</p>
 
     <p>Hello, {{request.user}}</p>
-    <p><a href="{% url 'dashboard:dashPage' %}">Click here to go to dashboard</a></p>
-    <p><a href="{% url 'CustomHome:insertRegularTransaction' %}">Click here to insertRegularTransaction</a></p>
-    <p><a href="{% url 'CustomHome:insertNonregularTransaction' %}">Click here to insertNonregularTransaction</a></p>
     <p><a href="{% url 'CustomHome:viewBudgetInfo' %}">Click here to view, insert into, update, and/or delete from budget</a><p>
-    <p><a href="{% url 'CustomHome:viewRegularTransaction' %}">Click here to view regular transactions</a></p>
-    <p><a href="{% url 'CustomHome:viewNonregularTransaction' %}">Click here to view non-regular transactions</a></p>
+    <p><a href="{% url 'CustomHome:viewRegularTransaction' %}">Click here to view, insert into, update, and/or delete from regular transactions</a></p>
+    <p><a href="{% url 'CustomHome:viewNonregularTransaction' %}">Click here to view, insert into, update, and/or delete from non-regular transactions</a></p>
 
     <p>some text here. PLEASE ADD LINKS TO OTHER PAGES LIKE INSERT DATA PAGE AND VIEW DATA PAGE ETC HERE.</p>
     <p>THE PAGES SHOULD NOT BE IN THE FINANCE APP.</p>

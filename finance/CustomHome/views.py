@@ -137,7 +137,9 @@ def createBudget(request):
     if request.method == 'POST':
         form = BudgetInfoForm(request.POST)
         if form.is_valid():
-            form.save()
+            b = form.save(commit=False)
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO customhome_budgetinfo VALUES(%s,%s,%s,%s,%s);", [b.id,b.category,b.percentage,b.total_amount_under_per_month,request.user.id])
             return redirect('CustomHome:viewBudgetInfo')
 
     context = {'form':form}
@@ -151,7 +153,9 @@ def updateBudget(request, pk):
     if request.method == 'POST':
         form = BudgetInfoForm(request.POST, instance=budget) #we cant JUST pass in request.POST because it will create a new item
         if form.is_valid():
-            form.save()
+            b = form.save(commit=False)
+            cursor = connection.cursor()
+            cursor.execute("UPDATE customhome_budgetinfo SET id=%s,category=%s,percentage=%s,total_amount_under_per_month=%s,user_id=%s WHERE id=%s;", [b.id,b.category,b.percentage,b.total_amount_under_per_month,request.user.id, pk])
             return redirect('CustomHome:viewBudgetInfo')
 
     context = {'form':form}
@@ -161,7 +165,9 @@ def updateBudget(request, pk):
 def deleteBudget(request, pk):
     budget = BudgetInfo.objects.get(id=pk)
     if request.method == "POST":
-        budget.delete()
+        #budget.delete()
+        cursor = connection.cursor()
+        cursor.execute("DELETE FROM customhome_budgetinfo WHERE id=%s", [pk])
         return redirect('CustomHome:viewBudgetInfo')
     context = {'item':budget}
     return render(request, 'CustomHome/budget_delete.html', context)

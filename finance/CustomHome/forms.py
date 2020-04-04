@@ -28,6 +28,9 @@ class InsertNonregularTransactionForm(ModelForm):
     class Meta:
         model = NonregularTransaction
         fields = ['category', 'amount', 'merchant', 'name','note','date','in_or_out']
+        labels = {
+            "in_or_out": "Out?"
+        }
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(InsertNonregularTransactionForm, self).__init__(*args, **kwargs)
@@ -40,6 +43,9 @@ class InsertRegularTransactionForm(ModelForm):
     class Meta:
         model = RegularTransaction
         fields = ['category', 'amount', 'merchant', 'name','note','frequency','start_date','in_or_out']
+        labels = {
+            "in_or_out": "Out?"
+        }
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(InsertRegularTransactionForm, self).__init__(*args, **kwargs)
@@ -52,11 +58,17 @@ class RegularTransactionForm(ModelForm):
     class Meta:
         model = RegularTransaction
         fields = ['category', 'amount', 'merchant', 'name','note','frequency','start_date','in_or_out']
+        labels = {
+            "in_or_out": "Out?"
+        }
 
 class NonregularTransactionForm(ModelForm):
     class Meta:
         model = NonregularTransaction
         fields = ['category', 'amount', 'merchant', 'name','note','date','in_or_out']
+        labels = {
+            "in_or_out": "Out?"
+        }
 
 class ProductForm(forms.Form):
     class Meta:
