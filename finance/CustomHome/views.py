@@ -7,6 +7,8 @@ from django.contrib import messages
 
 from django.contrib.auth.decorators import login_required
 from django.db import connection
+from django.db import connections #ADDED BY AW ON 4.4.20 NOT SAME AS CONNECTION LIBRARY ABOVE
+                                  #connections (not connection) allows you to use more than 1 database
 
 from .models import *
 from .forms import *
@@ -103,14 +105,21 @@ def insertRegularTransaction(request):
 
 @login_required(login_url='CustomHome:login')
 def homePage(request):
+    ########################## CODE FOR MONGODB
     import pymongo
     from pymongo import MongoClient
     cluster = MongoClient("mongodb+srv://mongoUser:mongoPass411@cs411-mongo-m207d.mongodb.net/test?retryWrites=true&w=majority")
     db = cluster["data"]
     collection = db["dataCollection"]
     results = collection.find({"name":"bill"})
-    context = {'query_results':results}
 
+    ####################### CODE FOR QUERIES WITHIN MYSQL DATABASE
+    #cursor = connection.cursor()
+    cursor = connections['default'].cursor()
+    cursor.execute("SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE month(nr.date) = 3) t GROUP BY t.user_id")
+    resultsFromHomeCursor = cursor.fetchall()
+
+    context = {'query_results':results, 'dict': resultsFromHomeCursor}
     return render(request, 'CustomHome/homePage.html', context)
 
 @login_required(login_url='CustomHome:login')
