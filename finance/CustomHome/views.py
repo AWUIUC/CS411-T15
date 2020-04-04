@@ -103,7 +103,15 @@ def insertRegularTransaction(request):
 
 @login_required(login_url='CustomHome:login')
 def homePage(request):
-    return render(request, 'CustomHome/homePage.html')
+    import pymongo
+    from pymongo import MongoClient
+    cluster = MongoClient("mongodb+srv://mongoUser:mongoPass411@cs411-mongo-m207d.mongodb.net/test?retryWrites=true&w=majority")
+    db = cluster["data"]
+    collection = db["dataCollection"]
+    results = collection.find({"name":"bill"})
+    context = {'query_results':results}
+
+    return render(request, 'CustomHome/homePage.html', context)
 
 @login_required(login_url='CustomHome:login')
 def viewBudgetInfo(request):
@@ -171,7 +179,7 @@ def deleteBudget(request, pk):
         return redirect('CustomHome:viewBudgetInfo')
     context = {'item':budget}
     return render(request, 'CustomHome/budget_delete.html', context)
-    
+
 @login_required(login_url='CustomHome:login')
 def viewRegularTransaction(request):
     #paginate_by = 100  # if pagination is desired
@@ -221,7 +229,7 @@ def deleteRegularTransaction(request, pk):
         #obj.delete()
         cursor = connection.cursor()
         cursor.execute("DELETE FROM customhome_regulartransaction WHERE id=%s", [pk])
-            
+
         return redirect('CustomHome:viewRegularTransaction')
     context = {'item':obj}
     return render(request, 'CustomHome/deleteRegularTransaction.html', context)
@@ -238,7 +246,7 @@ def updateNonregularTransaction(request, pk):
             #raw sql insert query
             cursor = connection.cursor()
             cursor.execute("UPDATE customhome_nonregulartransaction SET id=%s,category=%s,amount=%s,merchant=%s,name=%s,note=%s,in_or_out=%s,user_id=%s,date=%s WHERE id = %s", [t.id,t.category,t.amount,t.merchant,t.name,t.note,t.in_or_out,t.user_id,t.date, pk])
-            
+
             return redirect('CustomHome:viewNonregularTransaction')
 
     context = {'form':form}
