@@ -116,7 +116,8 @@ def homePage(request):
     ####################### CODE FOR QUERIES WITHIN MYSQL DATABASE
     #cursor = connection.cursor()
     cursor = connections['default'].cursor()
-    cursor.execute("SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE month(nr.date) = 3) t GROUP BY t.user_id")
+    #cursor.execute("SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE month(nr.date) = 3) t GROUP BY t.user_id")
+    cursor.execute("SELECT @date_given := "2021-05-02";SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r WHERE r.start_date <= @date_given UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE month(nr.date) = month(@date_given) AND year(nr.date) = year(@date_given)) t GROUP BY t.user_id")
     resultsFromHomeCursor = cursor.fetchall()
 
     context = {'query_results':results, 'dict': resultsFromHomeCursor}
