@@ -148,11 +148,13 @@ def viewBudgetInfo(request):
     args = {'budget':budget}
     return render(request, 'CustomHome/viewBudgetInfo.html', args)
 
+
+
 @login_required(login_url='CustomHome:login')
 def createBudget(request):
-    form = BudgetInfoForm()
+    form = BudgetInfoForm(user = request.user)
     if request.method == 'POST':
-        form = BudgetInfoForm(request.POST)
+        form = BudgetInfoForm(request.POST, user=request.user)
         if form.is_valid():
             b = form.save(commit=False)
             cursor = connection.cursor()
@@ -165,10 +167,10 @@ def createBudget(request):
 @login_required(login_url='CustomHome:login')
 def updateBudget(request, pk):
     budget = BudgetInfo.objects.get(id=pk)
-    form = BudgetInfoForm(instance=budget)
+    form = UpdateBudgetInfoForm(instance=budget)
 
     if request.method == 'POST':
-        form = BudgetInfoForm(request.POST, instance=budget) #we cant JUST pass in request.POST because it will create a new item
+        form = UpdateBudgetInfoForm(request.POST, instance=budget) #we cant JUST pass in request.POST because it will create a new item
         if form.is_valid():
             b = form.save(commit=False)
             cursor = connection.cursor()
