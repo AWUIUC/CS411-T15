@@ -20,9 +20,20 @@ class CustomProfileForm(ModelForm): #added on 3.26.20 by AW
 class BudgetInfoForm(ModelForm):
     class Meta:
         model = BudgetInfo
-        fields = '__all__'
+        #fields = '__all__'
+        fields = ['category', 'percentage', 'total_amount_under_per_month']
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        super(BudgetInfoForm, self).__init__(*args, **kwargs)
+    def save(self, *args, **kwargs):
+        self.instance.user = self.user
+        form = super(BudgetInfoForm, self).save(*args, **kwargs)
+        return form
 
-
+class UpdateBudgetInfoForm(ModelForm):
+    class Meta:
+        model = BudgetInfo
+        fields = ['category', 'percentage', 'total_amount_under_per_month']
 
 class InsertNonregularTransactionForm(ModelForm):
     class Meta:

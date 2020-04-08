@@ -116,8 +116,7 @@ def homePage(request):
     ####################### CODE FOR QUERIES WITHIN MYSQL DATABASE
     #cursor = connection.cursor()
     cursor = connections['default'].cursor()
-    #cursor.execute("SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE month(nr.date) = 3) t GROUP BY t.user_id")
-    cursor.execute("SELECT @date_given := "2021-05-02";SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r WHERE r.start_date <= @date_given UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE month(nr.date) = month(@date_given) AND year(nr.date) = year(@date_given)) t GROUP BY t.user_id")
+    cursor.execute("SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE month(nr.date) = 3) t GROUP BY t.user_id")
     resultsFromHomeCursor = cursor.fetchall()
 
     context = {'query_results':results, 'dict': resultsFromHomeCursor}
@@ -149,11 +148,13 @@ def viewBudgetInfo(request):
     args = {'budget':budget}
     return render(request, 'CustomHome/viewBudgetInfo.html', args)
 
+
+
 @login_required(login_url='CustomHome:login')
 def createBudget(request):
-    form = BudgetInfoForm()
+    form = BudgetInfoForm(user = request.user)
     if request.method == 'POST':
-        form = BudgetInfoForm(request.POST)
+        form = BudgetInfoForm(request.POST, user=request.user)
         if form.is_valid():
             b = form.save(commit=False)
             cursor = connection.cursor()
@@ -166,10 +167,10 @@ def createBudget(request):
 @login_required(login_url='CustomHome:login')
 def updateBudget(request, pk):
     budget = BudgetInfo.objects.get(id=pk)
-    form = BudgetInfoForm(instance=budget)
+    form = UpdateBudgetInfoForm(instance=budget)
 
     if request.method == 'POST':
-        form = BudgetInfoForm(request.POST, instance=budget) #we cant JUST pass in request.POST because it will create a new item
+        form = UpdateBudgetInfoForm(request.POST, instance=budget) #we cant JUST pass in request.POST because it will create a new item
         if form.is_valid():
             b = form.save(commit=False)
             cursor = connection.cursor()
