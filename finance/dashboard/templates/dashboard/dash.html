@@ -8,5 +8,78 @@
 <h1>This is a Heading for dashboard page</h1>
 <p>This is a paragraph for dashboard page.</p>
 
+
+<p>Your total spending for last month: ${{amount.0.0}} </p>
+<p>A user with a similar budget to you only spent ${{similarUserAmountSpent}} last month</p>
+
+<p>Your spending habits</p>
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Amount Spent</th>
+        <th>Amount Budgeted</th>
+    </tr>
+    {% for row in CategoryAndBudgetAmounts %}
+    <tr>
+        <td>{{ row.0 }}</td>
+        <td>{{ row.1 }}</td>
+        <td>{{ row.2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>Last month's spending habits of a user with a similar budget</p>
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Amount Spent</th>
+        <th>Amount Budgeted</th>
+    </tr>
+    {% for row in idealSpendingHabits %}
+    <tr>
+        <td>{{ row.0 }}</td>
+        <td>{{ row.1 }}</td>
+        <td>{{ row.2 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+<p>You spent within your budget for {{numBudgetCategoriesMet}} categories listed below</p>
+<table>
+    <tr>
+        <th>Categories</th>
+    </tr>
+    {% for row in categoriesMet %}
+    <tr>
+        <td>{{ row.0 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+<p>Below is how much you have/had left to spend in each category</p>
+<table>
+    <tr>
+        <th>Category</th>
+        <th>Amount left to spend</th>
+    </tr>
+    {% for row in amountLeftPerCategory %}
+    <tr>
+        <td>{{ row.0 }}</td>
+        <td>{{ row.1 }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+
+
+<!--
+{% for row in dict %}
+{{row.0}}
+{{row.1}}
+<p>====</p>
+{% endfor %}
+-->
+
 </body>
 </html>
