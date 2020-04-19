@@ -4,22 +4,76 @@ This html page handles create and update for budget info
 <!DOCTYPE html>
 <html>
 <head>
-<title>Some title for create and update into budget table</title>
+<title>Insert/Update Budget</title>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+<style>
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #ffffff !important;
+  }
+
+  .user_card {
+    width: 350px;
+    margin-top: auto;
+    margin-bottom: auto;
+    background: #74cfbf;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+
+  }
+
+  .title_back {
+    background: #74cfbf;
+    top:0;
+    position: relative;
+    width: 100%;
+    margin-bottom: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #74cfbf !important;
+    border-color: #74cfbf !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+</style>
 </head>
 <body>
 
-<h1>Some heading for create and update into budget table</h1>
-<p>This is a paragraph.</p>
-
-
-<p><a href = "{% url 'CustomHome:home' %}">Click here to go back to home page</a></p>
-<p><a href = "{% url 'CustomHome:viewBudgetInfo' %}">Click here to cancel or go back to budget info page</a></p>
-
-<form action = "" method = "POST">
-  {% csrf_token %}
-  {{form}}
-  <input type = "submit" name = "Submit">
-</form>
+  <div class="title_back">
+    <center><h1 style="color:white">Hello {{request.user}},<br> Welcome to your Insert/Update Budget Page!</h1></center>
+  </div>
+  <br>
+  <center><a href="{% url 'CustomHome:home' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Go Back to Home Page</a></center>
+  <br>
+  <center><a href="{% url 'CustomHome:viewBudgetInfo' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Click here to cancel or go back to budget info page</a></center>
+  <br>
+  <br>
+  <center>
+  <form action = "" method = "POST">
+    {% csrf_token %}
+    {{form}}
+    <input class="btn btn-primary" type = "submit" name = "Submit">
+  </form>
+</center>
 
 
 </body>

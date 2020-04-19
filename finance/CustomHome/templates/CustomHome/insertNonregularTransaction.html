@@ -1,29 +1,96 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Insert Transaction Title</title>
+    <title>Insert Non-regular Transaction</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+    <style>
+      body,
+      html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #ffffff !important;
+      }
+
+      .user_card {
+        width: 350px;
+        margin-top: auto;
+        margin-bottom: auto;
+        background: #74cfbf;
+        position: relative;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 10px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+
+      }
+
+      .title_back {
+        background: #74cfbf;
+        top:0;
+        position: relative;
+        width: 100%;
+        margin-bottom: auto;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+      }
+
+      .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+        background-color: #74cfbf !important;
+        border-color: #74cfbf !important;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 5px;
+      }
+    </style>
 </head>
 <body>
-    <h1>Insert Transaction Heading</h1>
-    <p>This is a paragraph on Insert Transaction page.</p>
+  <div class="title_back">
+    <center><h1 style="color:white">Hello {{request.user}},<br> Welcome to your Insert Non-regular Transaction Page!</h1></center>
+  </div>
+  <br>
+  <center><a href="{% url 'CustomHome:home' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Go Back to Home Page</a></center>
+  <br>
+  <center><a href="{% url 'CustomHome:viewNonregularTransaction' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">Click here to cancel or go back to Non-regular Transaction Info page</a></center>
+  <br>
+  <br>
+  <center>
     <form method="POST" action="">
         {% csrf_token %}
+        <div class="form-group">
         {{form.category.label}}
         {{form.category}}
         {{form.amount.label}}
         {{form.amount}}
         {{form.merchant.label}}
         {{form.merchant}}
+      </div>
+        <div class="form-group">
         {{form.name.label}}
         {{form.name}}
         {{form.note.label}}
         {{form.note}}
         {{form.date.label}}
         {{form.date}}
+      </div>
+        <div class="form-group">
         {{form.in_or_out.label}}
         {{form.in_or_out}}
-        <input type="submit" value="Send!">
+      </div>
+
+        <input class="btn btn-primary" type="submit" value="Submit">
     </form>
     {{form.errors}}
+  </center>
+
 </body>
 </html>
