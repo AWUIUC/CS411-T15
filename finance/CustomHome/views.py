@@ -64,7 +64,7 @@ def registerPage(request):
 
 def loginPage(request):
     if request.user.is_authenticated:
-        return redirect('CustomHome:insertNonregularTransaction')
+        return redirect('CustomHome:home')
     else:
         if request.method == 'POST':
             username = request.POST.get('username')
@@ -126,6 +126,8 @@ def insertRegularTransaction(request):
 
 @login_required(login_url='CustomHome:login')
 def homePage(request):
+
+
     ########################## CODE FOR MONGODB
     import pymongo
     from pymongo import MongoClient
