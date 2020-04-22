@@ -286,11 +286,14 @@ def homePage(request):
 
     #############################START OF MYSQL QUERY 5 TO GET TOTAL AMOUNT SPENT OF OTHER USER WITH SIMILAR BUDGET #########################################################################
     cursor.execute("SELECT @user_budget := total_amount_under_per_month from customhome_budgetinfo WHERE user_id = %s LIMIT 1", [varA])
-    cursor.execute("SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r WHERE r.start_date <= @date_previous_last_day AND user_id = (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1) LIMIT 1) UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE nr.date BETWEEN @date_previous_first_day AND @date_previous_last_day AND user_id = (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1) LIMIT 1)) t GROUP BY t.user_id", [varA, varA])
-    preProcessedTuple = cursor.fetchall() #tuple index 0 is OTHER userid and index 1 is total amount spent by other user/ideal user with similar budget to current user
-    similarUserAmountSpent = preProcessedTuple[0][1]
-    similarUserAmountSpent = float(similarUserAmountSpent)
-    similarUserAmountSpent = round(similarUserAmountSpent, 2)
+    rows_count = cursor.execute("SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r WHERE r.start_date <= @date_previous_last_day AND user_id = (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1) LIMIT 1) UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE nr.date BETWEEN @date_previous_first_day AND @date_previous_last_day AND user_id = (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1) LIMIT 1)) t GROUP BY t.user_id", [varA, varA])
+    if rows_count > 0:
+        preProcessedTuple = cursor.fetchall() #tuple index 0 is OTHER userid and index 1 is total amount spent by other user/ideal user with similar budget to current user
+        similarUserAmountSpent = preProcessedTuple[0][1]
+        similarUserAmountSpent = float(similarUserAmountSpent)
+        similarUserAmountSpent = round(similarUserAmountSpent, 2)
+    else:
+        similarUserAmountSpent = 0.0
     ############################## END OF MYSQL QUERY 5 #######################################################################################################################################
 
     ##############################START OF MYSQL QUERY 6/AF1 TO GET SPENDING HABITS OF IDEAL USER ##############################################################################################
