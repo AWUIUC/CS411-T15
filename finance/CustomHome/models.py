@@ -18,6 +18,8 @@ category_choices = [
     ('Misc', 'Misc'),
 ]
 
+category_form_choices = ['groceries','education','travel','rnb','bnu','shopping','entertainment','gas','misc',]
+
 category_default_values = [10,10,10,10,10,10,10,10,20,]
 
 class CustomProfile(models.Model): #added 3.26.20 by AW - extending the existing User Model

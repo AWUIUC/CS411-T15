@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'CustomHome',
+    'crispy_forms',
     'dashboard.apps.DashboardConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -71,6 +72,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'finance.wsgi.application'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
@@ -86,7 +88,15 @@ DATABASES = {
         'OPTIONS': {
             'ssl': {'ssl-ca': '/var/www/html/BaltimoreCyberTrustRoot.crt.pem'}
         }
-    }
+    },
+    # WE CANT DO THE THING BELOW BECAUSE IT WONT WORK - AW!!!!!!
+    #'mongodb': {
+    #    'ENGINE': 'djongo',
+    #    'NAME': 'mongoDB', # NAME OF DATABASE (NOT NODE) WHEN I MADE IT ON ATLAS
+    #    'USER': 'mongoUser',
+    #    'PASSWORD': "mongoPass411",
+    #    'HOST': "mongodb+srv://mongoUser:mongoPass411@cs411-mongo-m207d.mongodb.net/test?retryWrites=true&w=majority",
+    #}
 }
 
 

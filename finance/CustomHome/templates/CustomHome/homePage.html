@@ -1,20 +1,207 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Home Page Title</title>
+<title>Dashboard</title>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+<style>
+  body,
+  html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: #ffffff !important;
+  }
+  .user_card {
+    width: 540px;
+    height: 500px;
+    margin-bottom: 10%;
+    background: #74cfbf;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  .spending_card {
+    width: 350px;
+    height: 200px;
+    margin-top: 5%;
+    margin-bottom: 10%;
+    background: #74cfbf;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  .budget_card {
+    width: 700px;
+    height: 150px;
+    margin-bottom: 4%;
+
+    background: #74cfbf;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  .pie_card {
+    width: 900px;
+    height: 700px;
+    margin-bottom: 4%;
+
+    background: #74cfbf;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  .title_back {
+    background: #74cfbf;
+    top:0;
+    position: relative;
+    width: 100%;
+    margin-bottom: auto;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited {
+    background-color: #74cfbf !important;
+    border-color: #74cfbf !important;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+</style>
 </head>
 <body>
-    <h1>This is a Heading</h1>
-    <p>This is a paragraph on page home.</p>
+    <div class="title_back">
+      <center><h1 style="color:white">Hello {{request.user}},<br> Welcome to your Dashboard!</h1></center>
+    </div>
+    <br>
 
-    <p>Hello, {{request.user}}</p>
-    <p><a href="{% url 'CustomHome:viewBudgetInfo' %}">Click here to view, insert into, update, and/or delete from budget</a><p>
-    <p><a href="{% url 'CustomHome:viewRegularTransaction' %}">Click here to view, insert into, update, and/or delete from regular transactions</a></p>
-    <p><a href="{% url 'CustomHome:viewNonregularTransaction' %}">Click here to view, insert into, update, and/or delete from non-regular transactions</a></p>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="spending_card">
+              <div class="d-flex justify-content-center">
+                <center><h2 style="color:white">You spent a total of &nbsp; <font size=20px color=red>${{amount}}</font><br>last month</h2></center>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="spending_card">
+              <div class="d-flex justify-content-center">
+                <center><h2 style="color:white">A user with a similar budget only spent &nbsp; <br> <font size=20px color=green>${{similarUserAmountSpent}}</font> <br>last month</h2></center>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <p>some text here. PLEASE ADD LINKS TO OTHER PAGES LIKE INSERT DATA PAGE AND VIEW DATA PAGE ETC HERE.</p>
-    <p>THE PAGES SHOULD NOT BE IN THE FINANCE APP.</p>
-    <p><a href="{% url 'CustomHome:logout' %}">Click here to logout</a></p>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="user_card">
+              <div class="d-flex justify-content-center">
+                {% autoescape off %}
+                {{ current_user_spending_graph }}
+                {% endautoescape %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="user_card">
+              <div class="d-flex justify-content-center">
+                {% autoescape off %}
+                {{ other_user_spending_graph }}
+                {% endautoescape %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="budget_card">
+        <div class="d-flex justify-content-center">
+          <center><h2 style="color:white">Your total monthly budget is <font size=20px color=blue>${{monthly_budget}}</font> and you are meeting  <font size=20px color=#E84A27>{{numBudgetCategoriesMet}}</font> of the 9 budget categories</h2></center>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="user_card">
+              <div class="d-flex justify-content-center">
+                {% autoescape off %}
+                {{ money_left_to_spend_graph }}
+                {% endautoescape %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="user_card">
+              <div class="d-flex justify-content-center">
+                {% autoescape off %}
+                {{ budget_pie }}
+                {% endautoescape %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <center><a href="{% url 'CustomHome:viewBudgetInfo' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View, and/or Update Budget Info</a></center>
+    <br>
+    <center><a href="{% url 'CustomHome:viewRegularTransaction' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View, Insert, Update, and/or Delete Regular Transactions</a></center>
+    <br>
+    <center><a href="{% url 'CustomHome:viewNonregularTransaction' %}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">View, Insert, Update, and/or Delete Non-regular Transactions</a></center>
+    <br>
+    <center><a href="{% url 'CustomHome:logout' %}" class="btn btn-primary btn-lg active" style="background-color: grey !important; border-color: grey !important;" role="button" aria-pressed="true">Click here to logout</a></center>
+    <br>
 
 </body>
 </html>
