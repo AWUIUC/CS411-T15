@@ -89,14 +89,6 @@ DATABASES = {
             'ssl': {'ssl-ca': '/var/www/html/BaltimoreCyberTrustRoot.crt.pem'}
         }
     },
-    'mongodb': {
-        'ENGINE': 'djongo',
-        'CLIENT': {
-            'host': 'mongodb+srv://mongoUser:mongoPass411@cs411-mongo-m207d.mongodb.net/test?retryWrites=true&w=majority',
-            'username': 'mongoUser',
-            'password': 'mongoPass411',
-        }
-    }
     # WE CANT DO THE THING BELOW BECAUSE IT WONT WORK - AW!!!!!!
     #'mongodb': {
     #    'ENGINE': 'djongo',

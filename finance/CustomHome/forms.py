@@ -4,6 +4,35 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import *
 
+class BudgetAmountForm(forms.Form):
+    amount = forms.IntegerField(label='Total amount under per month')
+
+class BudgetPercentageForm(forms.Form):
+    groceries = forms.IntegerField(label=category_choices[0][0])
+    education = forms.IntegerField(label=category_choices[1][0])
+    travel = forms.IntegerField(label=category_choices[2][0])
+    rnb = forms.IntegerField(label=category_choices[3][0])
+    bnu = forms.IntegerField(label=category_choices[4][0])
+    shopping = forms.IntegerField(label=category_choices[5][0])
+    entertainment = forms.IntegerField(label=category_choices[6][0])
+    gas = forms.IntegerField(label=category_choices[7][0])
+    misc = forms.IntegerField(label=category_choices[8][0])
+
+    def clean(self):
+        cd = self.cleaned_data
+        groceries=cd.get('groceries')
+        education=cd.get('education')
+        travel=cd.get('travel')
+        rnb=cd.get('rnb')
+        bnu=cd.get('bnu')
+        shopping=cd.get('shopping')
+        entertainment=cd.get('entertainment')
+        gas=cd.get('gas')
+        misc=cd.get('misc')
+        if (groceries+education+travel+rnb+bnu+shopping+entertainment+gas+misc) != 100:
+            raise forms.ValidationError("Percentages need to add up to 100%")
+        return cd
+
 
 class CreateUserForm(UserCreationForm):
     class Meta:

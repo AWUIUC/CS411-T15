@@ -19,4 +19,6 @@ urlpatterns = [
     path('updateNonregularTransaction/<str:pk>/',views.updateNonregularTransaction, name='updateNonregularTransaction'),
     path('deleteRegularTransaction/<str:pk>/',views.deleteRegularTransaction, name='deleteRegularTransaction'),
     path('deleteNonregularTransaction/<str:pk>/',views.deleteNonregularTransaction, name='deleteNonregularTransaction'),
+    path('updateBudgetPercentage/',views.updateBudgetPercentage, name='updateBudgetPercentage'),
+    path('updateBudgetAmount/',views.updateBudgetAmount, name='updateBudgetAmount'),
 ]
