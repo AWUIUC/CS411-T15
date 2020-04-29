@@ -56,7 +56,7 @@ def registerPage(request):
                     bi.total_amount_under_per_month=2000
                     bi.user=user
                     bi.save()
-                    
+
                 return redirect('CustomHome:login')
 
         context = {'form':form, 'custom_ProfileForm':custom_ProfileForm}
@@ -161,7 +161,7 @@ def homePage(request):
     cursor.execute("SELECT @date_previous_last_day := LAST_DAY(NOW() - INTERVAL 1 MONTH)") # last day of previous month
 
     cursor.execute("SELECT @date_current_first_day := DATE_FORMAT(NOW(), '%Y-%m-01')") # first day of current month
-    cursor.execute("SELECT @date_current_last_day := DATE_FORMAT(NOW(), '%Y-%m-%d')") # last day of current month
+    cursor.execute("SELECT @date_current_last_day := LAST_DAY(NOW())") # last day of current month
 
 
     ###################################################### START MYSQL QUERY 1 TO GET TOTAL AMOUNT SPENT LAST MONTH FOR THIS USER ONLY ##############################################
@@ -250,6 +250,12 @@ def homePage(request):
     cursor.execute("SELECT b.category, IFNULL(a.total_amount, 0) as total_amount, b.budget FROM (SELECT t.user_id, t.category ,SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id, category  FROM customhome_regulartransaction r WHERE r.start_date <= @date_current_last_day AND r.user_id = %s UNION ALL SELECT amount, user_id, category FROM customhome_nonregulartransaction nr WHERE nr.date BETWEEN @date_current_first_day AND @date_current_last_day AND nr.user_id = %s) t GROUP BY t.category) a RIGHT OUTER JOIN (SELECT category, total_amount_under_per_month * (percentage/100) AS budget FROM customhome_budgetinfo WHERE user_id = %s) b ON a.category = b.category", [varA, varA, varA])
 
     spending_for_current_month = cursor.fetchall()
+
+    total_amountSpent_currMonth = 0
+    for row in spending_for_current_month:
+        total_amountSpent_currMonth += row[1]
+    total_amountSpent_currMonth = round(total_amountSpent_currMonth, 2)
+
     spending = [item[1] for item in spending_for_current_month]
 
     fig1 = go.Figure()
@@ -285,20 +291,38 @@ def homePage(request):
     ############################## END OF MYSQL QUERY 4 ##################################################################################################################################
 
     #############################START OF MYSQL QUERY 5 TO GET TOTAL AMOUNT SPENT OF OTHER USER WITH SIMILAR BUDGET #########################################################################
+
+    cursor.execute("SELECT @curr_user_age := age FROM customhome_customprofile WHERE user_id = %s", [varA])
+    cursor.execute("SELECT @age_lowerBound := @curr_user_age - 1")
+    cursor.execute("SELECT @age_upperBound := @curr_user_age + 1")
+
+
     cursor.execute("SELECT @user_budget := total_amount_under_per_month from customhome_budgetinfo WHERE user_id = %s LIMIT 1", [varA])
-    rows_count = cursor.execute("SELECT t.user_id, SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r WHERE r.start_date <= @date_previous_last_day AND user_id = (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1) LIMIT 1) UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE nr.date BETWEEN @date_previous_first_day AND @date_previous_last_day AND user_id = (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1) LIMIT 1)) t GROUP BY t.user_id", [varA, varA])
-    if rows_count > 0:
-        preProcessedTuple = cursor.fetchall() #tuple index 0 is OTHER userid and index 1 is total amount spent by other user/ideal user with similar budget to current user
-        similarUserAmountSpent = preProcessedTuple[0][1]
-        similarUserAmountSpent = float(similarUserAmountSpent)
-        similarUserAmountSpent = round(similarUserAmountSpent, 2)
-    else:
-        similarUserAmountSpent = 0.0
+
+    cursor.execute("SELECT i.user_id, SUM(i.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r WHERE r.start_date <= @date_previous_last_day AND user_id IN (SELECT t.user_id AS user_id FROM (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1)) t JOIN customhome_customprofile ON t.user_id = customhome_customprofile.user_id WHERE age <= @age_upperBound AND age >= @age_lowerBound) UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE nr.date BETWEEN @date_previous_first_day AND @date_previous_last_day AND user_id IN (SELECT t.user_id AS user_id FROM (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1)) t JOIN customhome_customprofile ON t.user_id = customhome_customprofile.user_id WHERE age <= @age_upperBound AND age >= @age_lowerBound)) i GROUP BY i.user_id", [varA, varA])
+
+    rows = cursor.fetchall()
+    similarUserAmountSpent = 0.0
+
+    for row in rows:
+        if row[1] > 0:
+            similarUserAmountSpent = row[1]
+    #if rows_count > 0:
+    #    preProcessedTuple = cursor.fetchall() #tuple index 0 is OTHER userid and index 1 is total amount spent by other user/ideal user with similar budget to current user
+    #    similarUserAmountSpent = preProcessedTuple[0][1]
+    #    similarUserAmountSpent = float(similarUserAmountSpent)
+    #    similarUserAmountSpent = round(similarUserAmountSpent, 2)
+    #else:
+    #    similarUserAmountSpent = 0.0
     ############################## END OF MYSQL QUERY 5 #######################################################################################################################################
 
     ##############################START OF MYSQL QUERY 6/AF1 TO GET SPENDING HABITS OF IDEAL USER ##############################################################################################
     cursor.execute("SELECT @user_budget := total_amount_under_per_month from customhome_budgetinfo WHERE user_id = %s LIMIT 1", [varA])
-    cursor.execute("SELECT @other_user := t.user_id FROM (SELECT (frequency/12)*amount AS amount, user_id FROM customhome_regulartransaction r WHERE r.start_date <= @date_previous_last_day AND user_id = (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1) LIMIT 1) UNION ALL SELECT amount, user_id FROM customhome_nonregulartransaction nr WHERE nr.date BETWEEN @date_previous_first_day AND @date_previous_last_day AND user_id = (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1) LIMIT 1)) t GROUP BY t.user_id", [varA, varA])
+
+    cursor.execute("SELECT @other_user := t.user_id FROM (SELECT t.user_id AS user_id FROM (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1)) t JOIN customhome_customprofile ON t.user_id = customhome_customprofile.user_id WHERE age <= @age_upperBound AND age >= @age_lowerBound) t LIMIT 1", [varA])
+
+
+
     cursor.execute("SELECT b.category, IFNULL(a.total_amount, 0) as amt_spent, b.budget FROM (SELECT t.user_id, t.category ,SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id, category  FROM customhome_regulartransaction r WHERE r.start_date <= @date_previous_last_day AND r.user_id = @other_user UNION ALL SELECT amount, user_id, category FROM customhome_nonregulartransaction nr WHERE nr.date BETWEEN @date_previous_first_day AND @date_previous_last_day AND nr.user_id = @other_user) t GROUP BY t.category) a RIGHT OUTER JOIN (SELECT category, total_amount_under_per_month * (percentage/100) AS budget FROM customhome_budgetinfo WHERE user_id = @other_user) b ON a.category = b.category")
 
     otherUserSpendingHabits = cursor.fetchall() #tuple(category, amt_spent, budget amount for category)
@@ -329,7 +353,7 @@ def homePage(request):
 
     ############################# END OF MYSQL QUERY 7 ##########################################################################################################################################
 
-    context = {'query_results':results, 'money_left_to_spend_graph':money_left_to_spend_graph, 'budget_pie':budget_pie, 'monthly_budget':monthly_budget, 'current_user_spending_graph': current_user_spending_graph, 'other_user_spending_graph':other_user_spending_graph , 'amount': totalAmountSpentLastMonth, 'numBudgetCategoriesMet':numCategoriesBeingMet, 'similarUserAmountSpent':similarUserAmountSpent}
+    context = {'query_results':results, 'money_left_to_spend_graph':money_left_to_spend_graph, 'budget_pie':budget_pie, 'monthly_budget':monthly_budget, 'current_user_spending_graph': current_user_spending_graph, 'other_user_spending_graph':other_user_spending_graph , 'amount': totalAmountSpentLastMonth, 'numBudgetCategoriesMet':numCategoriesBeingMet, 'similarUserAmountSpent':similarUserAmountSpent, 'CurrUser_CurrMonth_TotalSpending': total_amountSpent_currMonth}
     return render(request, 'CustomHome/homePage.html', context)
 
 @login_required(login_url='CustomHome:login')
@@ -425,8 +449,8 @@ def updateBudgetPercentage(request):
 
     context = {'form':form}
     return render(request, 'CustomHome/updateBudgetPercentage.html',context)
-            
-            
+
+
 
 @login_required(login_url='CustomHome:login')
 def deleteBudget(request, pk):
