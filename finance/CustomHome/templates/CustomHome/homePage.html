@@ -17,7 +17,23 @@
   .user_card {
     width: 540px;
     height: 500px;
-    margin-bottom: 10%;
+    margin-bottom: 5%;
+    background: #74cfbf;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  .avg_user_card {
+    width: 540px;
+    height: 500px;
+    margin-bottom: 5%;
     background: #74cfbf;
     position: relative;
     display: flex;
@@ -35,6 +51,23 @@
     height: 200px;
     margin-top: 5%;
     margin-bottom: 10%;
+    background: #74cfbf;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
+  .avg_spending_card {
+    width: 450px;
+    height: 250px;
+    margin-top: 5%;
+    margin-bottom: 5%;
     background: #74cfbf;
     position: relative;
     display: flex;
@@ -160,13 +193,45 @@
     </div>
 
     <div class="d-flex justify-content-center">
-      <div class="budget_card">
+      <div class="avg_spending_card">
         <div class="d-flex justify-content-center">
-          <center><h2 style="color:white">This month, you have spent a grand total of <font size=20px color=#E84A27>${{ CurrUser_CurrMonth_TotalSpending }}</font>. </h2></center>
+          <center><h2 style="color:white">The average user with a similar budget to yours spent a total of &nbsp; <br> <font size=20px color=green>${{avgUserAmountSpent}}</font> <br>last month</h2></center>
         </div>
       </div>
     </div>
 
+    <div class="container">
+      <div class="row">
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="avg_user_card">
+              <div class="d-flex justify-content-center">
+                {% autoescape off %}
+                {{ avg_user_spending_graph }}
+                {% endautoescape %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm">
+          <div class="d-flex justify-content-center">
+            <div class="user_card">
+              <div class="d-flex justify-content-center">
+                <center><h2 style="color:white">Good job! You are doing better than your peers on the <font size=15px color=green>{{categories_below_avg}}</font> categories! <br> However, you need to work on the <font size=15px color=red>{{categories_above_avg}}</font> categories!</h2></center>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center">
+      <div class="budget_card">
+        <div class="d-flex justify-content-center">
+          <center><h2 style="color:white">This month, you have spent a grand total of <font size=20px color=#E84A27>${{ CurrUser_CurrMonth_TotalSpending }}</font> </h2></center>
+        </div>
+      </div>
+    </div>
 
     <div class="d-flex justify-content-center">
       <div class="budget_card">
