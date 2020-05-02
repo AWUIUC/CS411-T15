@@ -30,6 +30,22 @@
     border-radius: 5px;
   }
 
+  .recommendation_card {
+    width: 540px;
+    height: 500px;
+    margin-bottom: 5%;
+    background: #d6d4d4;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -webkit-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    -moz-box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+  }
+
   .avg_user_card {
     width: 540px;
     height: 500px;
@@ -148,7 +164,7 @@
           <div class="d-flex justify-content-center">
             <div class="spending_card">
               <div class="d-flex justify-content-center">
-                <center><h2 style="color:white">You spent a total of &nbsp; <font size=20px color=red>${{amount}}</font><br>last month</h2></center>
+                <center><h2 style="color:white">You spent a total of &nbsp; <font size=20px color=#E84A27>${{amount}}</font><br>last month</h2></center>
               </div>
             </div>
           </div>
@@ -215,9 +231,9 @@
         </div>
         <div class="col-sm">
           <div class="d-flex justify-content-center">
-            <div class="user_card">
+            <div class="recommendation_card">
               <div class="d-flex justify-content-center">
-                <center><h2 style="color:white">Good job! You are doing better than your peers on the <font size=15px color=green>{{categories_below_avg}}</font> categories! <br> However, you need to work on the <font size=15px color=red>{{categories_above_avg}}</font> categories!</h2></center>
+                <center><h2 style="color:blue"><font color=#425dc3>{{categories_below_avg}}</font><br><br><font color=#E84A27>{{categories_above_avg}}</font></h2></center>
               </div>
             </div>
           </div>
@@ -236,7 +252,7 @@
     <div class="d-flex justify-content-center">
       <div class="budget_card">
         <div class="d-flex justify-content-center">
-          <center><h2 style="color:white">Your total monthly budget is <font size=20px color=blue>${{monthly_budget}}</font> and you are meeting  <font size=20px color=#E84A27>{{numBudgetCategoriesMet}}</font> of the 9 budget categories</h2></center>
+          <center><h2 style="color:white">Your total monthly budget is <font size=20px color=#425dc3>${{monthly_budget}}</font> and you are meeting  <font size=20px color=#E84A27>{{numBudgetCategoriesMet}}</font> of the 9 budget categories</h2></center>
         </div>
       </div>
     </div>
