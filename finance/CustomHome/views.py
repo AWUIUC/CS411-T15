@@ -215,7 +215,7 @@ def homePage(request):
     ])
     # Change the bar mode
     fig.layout.update(title="Your spending last month",
-    yaxis_title="Amount (in $)", barmode='group', paper_bgcolor='rgba(0,0,0,0)',
+    yaxis_title="Amount ($)", barmode='group', paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)', legend=dict(x=-.1, y=1.2), width=570,
     height=500, font=dict(family="Calibri", size=16, color="#ffffff"))
 
@@ -289,7 +289,7 @@ def homePage(request):
     ))
 
     fig1.layout.update(barmode='stack', title="Money left to spend for Current Month", paper_bgcolor='rgba(0,0,0,0)',
-    plot_bgcolor='rgba(0,0,0,0)', xaxis_title="Amount (in $)",
+    plot_bgcolor='rgba(0,0,0,0)', xaxis_title="Amount ($)",
     width=550,
     height=450, font=dict(family="Calibri", size=16, color="#ffffff"))
 
@@ -351,7 +351,7 @@ def homePage(request):
     ])
     # Change the bar mode
     fig.layout.update(title="Similar user's spending last month",
-    yaxis_title="Amount (in $)", barmode='group', paper_bgcolor='rgba(0,0,0,0)',
+    yaxis_title="Amount ($)", barmode='group', paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)', legend=dict(x=-.1, y=1.2), width=570,
     height=500, font=dict(family="Calibri", size=16, color="#ffffff"))
 
@@ -393,7 +393,7 @@ def homePage(request):
     ])
     # Change the bar mode
     fig.layout.update(title="Average user's spending last month",
-    yaxis_title="Amount (in $)", barmode='group', paper_bgcolor='rgba(0,0,0,0)',
+    yaxis_title="Amount ($)", barmode='group', paper_bgcolor='rgba(0,0,0,0)',
     plot_bgcolor='rgba(0,0,0,0)', legend=dict(x=-.1, y=1.2), width=570,
     height=500, font=dict(family="Calibri", size=16, color="#ffffff"))
 
