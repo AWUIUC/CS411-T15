@@ -314,6 +314,9 @@ def homePage(request):
 
     for row in rows:
         if row[1] > 0:
+            ideal_user = row[0]
+            ideal_user = int(ideal_user)
+            print(ideal_user)
             similarUserAmountSpent = row[1]
             similarUserAmountSpent = float(similarUserAmountSpent)
             similarUserAmountSpent = round(similarUserAmountSpent, 2)
@@ -333,7 +336,7 @@ def homePage(request):
     cursor.execute("CALL SetUserBudget(%s)", [varA])
 
     #cursor.execute("SELECT @other_user := t.user_id FROM (SELECT t.user_id AS user_id FROM (SELECT DISTINCT b.user_id FROM customhome_budgetinfo b WHERE b.user_id != %s AND b.total_amount_under_per_month > ((@user_budget)*0.9) AND b.total_amount_under_per_month < ((@user_budget)*1.1)) t JOIN customhome_customprofile ON t.user_id = customhome_customprofile.user_id WHERE age <= @age_upperBound AND age >= @age_lowerBound) t LIMIT 1", [varA])
-    cursor.execute("CALL SetOtherUser(%s)", [varA])
+    cursor.execute("CALL SetOtherUser(%s)", [idealUserId])
 
     #cursor.execute("SELECT b.category, IFNULL(a.total_amount, 0) as amt_spent, b.budget FROM (SELECT t.user_id, t.category ,SUM(t.amount) AS total_amount FROM (SELECT (frequency/12)*amount AS amount, user_id, category  FROM customhome_regulartransaction r WHERE r.start_date <= @date_previous_last_day AND r.user_id = @other_user UNION ALL SELECT amount, user_id, category FROM customhome_nonregulartransaction nr WHERE nr.date BETWEEN @date_previous_first_day AND @date_previous_last_day AND nr.user_id = @other_user) t GROUP BY t.category) a RIGHT OUTER JOIN (SELECT category, total_amount_under_per_month * (percentage/100) AS budget FROM customhome_budgetinfo WHERE user_id = @other_user) b ON a.category = b.category ORDER BY b.category ASC")
     cursor.execute("CALL Query6()")
