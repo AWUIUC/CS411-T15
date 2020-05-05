@@ -647,3 +647,35 @@ def deleteNonregularTransaction(request, pk):
         return redirect('CustomHome:viewNonregularTransaction')
     context = {'item':obj}
     return render(request, 'CustomHome/deleteNonregularTransaction.html', context)
+
+@login_required(login_url='CustomHome:login')
+def searchNonregular(request):
+    form=SearchNonregularTransactionForm()
+
+    context = {'form':form}
+    return render(request, 'CustomHome/searchNonregular.html', context)
+
+@login_required(login_url='CustomHome:login')
+def viewSearchNonregularResult(request):
+    c = request.POST.get('category')
+    min_a = request.POST.get('min_amount')
+    max_a = request.POST.get('max_amount')
+    min_d = request.POST.get('min_date')
+    max_d = request.POST.get('max_date')
+    cursor = connection.cursor()
+    cursor.execute('SELECT n.category AS category,n.amount AS amount,n.merchant AS merchant,n.name AS name,n.note AS note,n.date AS date,n.in_or_out AS in_or_out,b.percentage AS percentage,b.total_amount_under_per_month AS total_amount_under_per_month FROM customhome_nonregulartransaction n join customhome_budgetinfo b on n.user_id=b.user_id AND n.category=b.category WHERE b.user_id = %s AND b.category=%s AND n.amount>=%s AND n.amount <= %s AND n.date>=%s AND n.date <= %s',[request.user.id, c, min_a, max_a, min_d, max_d])
+    #cursor.fetchall()
+    object_list = dictfetchall(cursor)
+
+
+    #NonregularTransaction.objects.raw('SELECT * FROM customhome_nonregulartransaction WHERE user_id = %s AND category=%s',[request.user.id, c])
+    context={'nonregulartransaction_list':object_list}
+    return render(request, 'CustomHome/viewSearchNonregularResult.html', context)
+
+def dictfetchall(cursor):
+    "Return all rows from a cursor as a dict"
+    columns = [col[0] for col in cursor.description]
+    return [
+        dict(zip(columns, row))
+        for row in cursor.fetchall()
+    ]
