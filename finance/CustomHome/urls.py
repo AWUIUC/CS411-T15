@@ -21,4 +21,6 @@ urlpatterns = [
     path('deleteNonregularTransaction/<str:pk>/',views.deleteNonregularTransaction, name='deleteNonregularTransaction'),
     path('updateBudgetPercentage/',views.updateBudgetPercentage, name='updateBudgetPercentage'),
     path('updateBudgetAmount/',views.updateBudgetAmount, name='updateBudgetAmount'),
+    path('searchNonregular/',views.searchNonregular, name='searchNonregular'),
+    path('viewSearchNonregularResult/',views.viewSearchNonregularResult, name='viewSearchNonregularResult'),
 ]

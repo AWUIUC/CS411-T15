@@ -79,6 +79,13 @@ class InsertNonregularTransactionForm(ModelForm):
         form = super(InsertNonregularTransactionForm, self).save(*args, **kwargs)
         return form
 
+class SearchNonregularTransactionForm(forms.Form):
+    category = forms.CharField(label='Category', widget=forms.Select(choices=category_choices))
+    min_amount = forms.DecimalField(label='Min Amount')
+    max_amount = forms.DecimalField(label='Max Amount')
+    max_date = forms.DateField(label='Before this Date')
+    min_date = forms.DateField(label='After this Date')
+
 class InsertRegularTransactionForm(ModelForm):
     class Meta:
         model = RegularTransaction
